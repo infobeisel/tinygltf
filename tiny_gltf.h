@@ -4383,8 +4383,9 @@ bool TinyGLTF::LoadFromString(Model *model, std::string *err, std::string *warn,
       json::const_iterator it(root.begin());
       json::const_iterator itEnd(root.end());
       for (; it != itEnd; ++it) {
-        // parse KHR_lights_cmn extension
-        if ((it.key().compare("KHR_lights_cmn") == 0) &&
+        // parse KHR_lights_cmn extension and KHR_lights_punctual
+        if ((it.key().compare("KHR_lights_cmn") == 0
+			|| it.key().compare("KHR_lights_punctual") == 0) &&
             it.value().is_object()) {
           const json &object = it.value();
           json::const_iterator itLight(object.find("lights"));
@@ -5408,7 +5409,7 @@ bool TinyGLTF::WriteGltfSceneToFile(Model *model, const std::string &filename,
   // EXTENSIONS
   SerializeExtensionMap(model->extensions, output);
 
-  // LIGHTS as KHR_lights_cmn
+  // LIGHTS as KHR_lights_cmn AND KHR_lights_punctual
   if (model->lights.size()) {
     json lights;
     for (unsigned int i = 0; i < model->lights.size(); ++i) {
@@ -5418,6 +5419,8 @@ bool TinyGLTF::WriteGltfSceneToFile(Model *model, const std::string &filename,
     }
     json khr_lights_cmn;
     khr_lights_cmn["lights"] = lights;
+    json khr_lights_punctual;
+	khr_lights_punctual["lights"] = lights;
     json ext_j;
 
     if (output.find("extensions") != output.end()) {
@@ -5425,6 +5428,7 @@ bool TinyGLTF::WriteGltfSceneToFile(Model *model, const std::string &filename,
     }
 
     ext_j["KHR_lights_cmn"] = khr_lights_cmn;
+    ext_j["KHR_lights_punctual"] = khr_lights_punctual;
 
     output["extensions"] = ext_j;
   }
