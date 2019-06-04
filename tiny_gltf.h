@@ -786,6 +786,7 @@ struct Scene {
 struct Light {
   std::string name;
   std::vector<double> color;
+  std::vector<double> intensity;
   std::string type;
 
   bool operator==(const Light &) const;
@@ -1293,7 +1294,7 @@ bool Image::operator==(const Image &other) const {
 }
 bool Light::operator==(const Light &other) const {
   return Equals(this->color, other.color) && this->name == other.name &&
-         this->type == other.type;
+         this->type == other.type && Equals(this->intensity,other.intensity);
 }
 bool Material::operator==(const Material &other) const {
   return this->additionalValues == other.additionalValues &&
@@ -3392,6 +3393,7 @@ static bool ParseMesh(Mesh *mesh, Model *model, std::string *err,
 static bool ParseLight(Light *light, std::string *err, const json &o) {
   ParseStringProperty(&light->name, err, o, "name", false);
   ParseNumberArrayProperty(&light->color, err, o, "color", false);
+  ParseNumberArrayProperty(&light->intensity, err, o, "intensity", false);
   ParseStringProperty(&light->type, err, o, "type", false);
   return true;
 }
