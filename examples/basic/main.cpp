@@ -1,4 +1,4 @@
-﻿#include <fstream>
+#include <fstream>
 #include <iostream>
 
 #include <GL/glew.h>
@@ -56,7 +56,7 @@ std::map<int, GLuint> bindMesh(std::map<int, GLuint> vbos,
                  */
     }
 
-    tinygltf::Buffer buffer = model.buffers[bufferView.buffer];
+    const tinygltf::Buffer &buffer = model.buffers[bufferView.buffer];
     std::cout << "bufferview.target " << bufferView.target << std::endl;
 
     GLuint vbo;
@@ -332,7 +332,6 @@ int main(int argc, char **argv) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #ifdef __APPLE__
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
 #endif
 
   Window window = Window(800, 600, "TinyGLTF basic example");

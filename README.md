@@ -7,6 +7,8 @@ If you are looking for old, C++03 version, please use `devel-picojson` branch.
 
 ## Status
 
+ - v2.4.0 Experimental RapidJSON support. Experimental C++14 support(C++14 may give better performance)
+ - v2.3.0 Modified Material representation according to glTF 2.0 schema(and introduced TextureInfo class)
  - v2.2.0 release(Support loading 16bit PNG. Sparse accessor support)
  - v2.1.0 release(Draco support)
  - v2.0.0 release(22 Aug, 2018)!
@@ -54,6 +56,12 @@ If you are looking for old, C++03 version, please use `devel-picojson` branch.
 * Extensions
   * [x] Draco mesh decoding
 
+## Note on extension property
+
+In extension(`ExtensionMap`), JSON number value is parsed as int or float(number) and stored as `tinygltf::Value` object. If you want a floating point value from `tinygltf::Value`, use `GetNumberAsDouble()` method.
+
+`IsNumber()` returns true if the underlying value is an int value or a floating point value.
+
 ## Examples
 
 * [glview](examples/glview) : Simple glTF geometry viewer.
@@ -67,6 +75,8 @@ If you are looking for old, C++03 version, please use `devel-picojson` branch.
 * GLTF loader plugin for OGRE 2.1. Support for PBR materials via HLMS/PBS https://github.com/Ybalrid/Ogre_glTF
 * [TinyGltfImporter](http://doc.magnum.graphics/magnum/classMagnum_1_1Trade_1_1TinyGltfImporter.html) plugin for [Magnum](https://github.com/mosra/magnum), a lightweight and modular C++11/C++14 graphics middleware for games and data visualization.
 * [Diligent Engine](https://github.com/DiligentGraphics/DiligentEngine) - A modern cross-platform low-level graphics library and rendering framework
+* Lighthouse 2: a rendering framework for real-time ray tracing / path tracing experiments. https://github.com/jbikker/lighthouse2 
+* [QuickLook GLTF](https://github.com/toshiks/glTF-quicklook) - quicklook plugin for macos. Also SceneKit wrapper for tinygltf.
 * Your projects here! (Please send PR)
 
 ## TODOs
@@ -76,7 +86,7 @@ If you are looking for old, C++03 version, please use `devel-picojson` branch.
   * [x] Load Draco compressed mesh
   * [ ] Save Draco compressed mesh
   * [ ] Open3DGC?
-* [ ] Support `extensions` and `extras` property
+* [x] Support `extensions` and `extras` property
 * [ ] HDR image?
   * [ ] OpenEXR extension through TinyEXR.
 * [ ] 16bit PNG support in Serialization
@@ -143,6 +153,8 @@ if (!ret) {
 * `TINYGLTF_NO_INCLUDE_JSON `: Disable including `json.hpp` from within `tiny_gltf.h` because it has been already included before or you want to include it using custom path before including `tiny_gltf.h`.
 * `TINYGLTF_NO_INCLUDE_STB_IMAGE `: Disable including `stb_image.h` from within `tiny_gltf.h` because it has been already included before or you want to include it using custom path before including `tiny_gltf.h`.
 * `TINYGLTF_NO_INCLUDE_STB_IMAGE_WRITE `: Disable including `stb_image_write.h` from within `tiny_gltf.h` because it has been already included before or you want to include it using custom path before including `tiny_gltf.h`.
+* `TINYGLTF_USE_RAPIDJSON` : Use RapidJSON as a JSON parser/serializer. RapidJSON files are not included in TinyGLTF repo. Please set an include path to RapidJSON if you enable this featrure.
+* `TINYGLTF_USE_CPP14` : Use C++14 feature(requires C++14 compiler). This may give better performance than C++11.
 
 
 ### Saving gltTF 2.0 model
@@ -186,3 +198,4 @@ $ ./tester_noexcept
 * json.hpp : Licensed under the MIT License <http://opensource.org/licenses/MIT>. Copyright (c) 2013-2017 Niels Lohmann <http://nlohmann.me>.
 * stb_image : Public domain.
 * catch : Copyright (c) 2012 Two Blue Cubes Ltd. All rights reserved. Distributed under the Boost Software License, Version 1.0.
+* RapidJSON : Copyright (C) 2015 THL A29 Limited, a Tencent company, and Milo Yip. All rights reserved. http://rapidjson.org/
